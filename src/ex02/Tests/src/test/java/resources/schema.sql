@@ -1,0 +1,1 @@
+CREATE TABLE books (book_id BIGINT PRIMARY KEY, book_name varchar(255) NOT NULL, book_price float);
