@@ -1,6 +1,6 @@
 package edu.school21.repositories;
 
-import models.Product;
+import edu.school21.models.Product;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -12,6 +12,9 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
     private static Connection connection;
     private DataSource dataSource;
 
+    public ProductsRepositoryJdbcImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public List<Product> findAll() {
@@ -39,22 +42,24 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
 
     @Override
     public Optional<Product> findById(Long id) {
-        final String request = "SELECT * FROM books WHERE id= ?";
-
         Product product = null;
 
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(request);
+            PreparedStatement statement = connection
+                    .prepareStatement("SELECT * FROM books WHERE book_id=?");
             statement.setLong(1, id);
+
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                product = new Product(
-                        resultSet.getInt("book_id"),
-                        resultSet.getString("book_name"),
-                        resultSet.getFloat("book_price")
-                );
-            }
+
+            resultSet.next();
+            System.out.println(resultSet.getLong("book_id"));
+            product = new Product(
+                    resultSet.getLong("book_id"),
+                    resultSet.getString("book_name"),
+                    resultSet.getFloat("book_price")
+            );
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,12 +70,13 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
     @Override
     public void update(Product product) {
         try {
-            Statement statement = connection.createStatement();
-            String updateRequest =
-                    "UPDATE books SET book_name = '" + product.getName()
-                            + "', book_price = " + product.getPrice()
-                            + " WHERE book_id = " + product.getId();
-            statement.executeUpdate(updateRequest);
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("UPDATE books SET book_name=?, " +
+                            "book_price=? WHERE book_id = ?");
+            preparedStatement.setString(1, product.getName());
+            preparedStatement.setFloat(2, product.getPrice());
+            preparedStatement.setLong(3, product.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,12 +85,14 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
     @Override
     public void save(Product product) {
         try {
-            Statement statement = connection.createStatement();
-            String saveRequest =
-                    "INSERT INTO books VALUES(" + 1 + ",'" + product.getName() +
-                            "'," + product.getName() + ",'"
-                            + product.getPrice() + "')";
-            statement.executeUpdate(saveRequest);
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO books VALUES(?, ?, ?)");
+
+            preparedStatement.setLong(1, product.getId());
+            preparedStatement.setString(2, product.getName());
+            preparedStatement.setFloat(3, product.getPrice());
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -93,10 +101,12 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
     @Override
     public void delete(Long id) {
         try {
-            Statement statement = connection.createStatement();
-            String deleteRequest =
-                    "DELETE FROM books WHERE book_id = " + id;
-            statement.executeUpdate(deleteRequest);
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("DELETE FROM books WHERE book_id=?");
+
+            preparedStatement.setLong(1, id);
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
