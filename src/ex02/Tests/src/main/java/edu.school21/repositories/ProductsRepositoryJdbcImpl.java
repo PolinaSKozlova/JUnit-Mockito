@@ -52,14 +52,13 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
 
             ResultSet resultSet = statement.executeQuery();
 
-            resultSet.next();
-            System.out.println(resultSet.getLong("book_id"));
-            product = new Product(
-                    resultSet.getLong("book_id"),
-                    resultSet.getString("book_name"),
-                    resultSet.getFloat("book_price")
-            );
-
+            if (resultSet.next()) {
+                product = new Product(
+                        resultSet.getLong("book_id"),
+                        resultSet.getString("book_name"),
+                        resultSet.getFloat("book_price")
+                );
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,7 +71,7 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("UPDATE books SET book_name=?, " +
-                            "book_price=? WHERE book_id = ?");
+                            "book_price=? WHERE book_id=?");
             preparedStatement.setString(1, product.getName());
             preparedStatement.setFloat(2, product.getPrice());
             preparedStatement.setLong(3, product.getId());
