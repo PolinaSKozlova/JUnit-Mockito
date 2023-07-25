@@ -21,12 +21,11 @@ public class EmbeddedDataSourceTest {
     @BeforeEach
     void init() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        EmbeddedDatabase database = builder
+        dataSource = builder
                 .setType(EmbeddedDatabaseType.HSQL)
-                .continueOnError(true)
-                .addScripts("data.sql", "schema.sql")
+                .addScript("schema.sql")
+                .addScripts("data.sql")
                 .build();
-        dataSource = database;
     }
 
     @Test

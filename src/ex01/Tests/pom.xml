@@ -7,9 +7,19 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-
     <name>ex01</name>
     <url>http://maven.apache.org</url>
+
+<!--    <beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"-->
+<!--           xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd-->
+<!--        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">-->
+
+<!--        <jdbc:embedded-database id="dataSource" type="HSQL">-->
+<!--            <jdbc:script location="classpath:schema.sql" />-->
+<!--            <jdbc:script location="classpath:data.sql" />-->
+<!--        </jdbc:embedded-database>-->
+<!--    </beans>-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,42 +38,44 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>5.9.0</version>
             <scope>test</scope>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-surefire-plugin</artifactId>-->
-<!--            <version>3.0.0-M5</version>-->
-<!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.0</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>5.3.6</version>
+            <scope>runtime</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
+         <!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.4.1</version>
+            <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>commons-io</groupId>-->
+<!--            <artifactId>commons-io</artifactId>-->
+<!--            <version>2.11.0</version>-->
+<!--        </dependency>-->
     </dependencies>
 
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>2.22.0</version>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
