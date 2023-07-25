@@ -5,13 +5,13 @@ public class Product {
     private String name;
     private float price;
 
-    public Product(int bookId, String bookName, float bookPrice) {
+    public Product(long bookId, String bookName, float bookPrice) {
         id = bookId;
         name = bookName;
         price = bookPrice;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
