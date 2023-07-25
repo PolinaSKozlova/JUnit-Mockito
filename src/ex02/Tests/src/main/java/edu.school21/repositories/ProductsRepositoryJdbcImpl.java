@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductsRepositoryJdbcImpl implements ProductsRepository {
-    private static int PRODUCTS_COUNT;
     private static Connection connection;
     private DataSource dataSource;
 
@@ -20,7 +19,7 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
 
         try {
             connection = dataSource.getConnection();
-            final String request = "SELECT * FROM Person";
+            final String request = "SELECT * FROM books";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(request);
 
@@ -40,7 +39,7 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
 
     @Override
     public Optional<Product> findById(Long id) {
-        final String request = "SELECT * FROM products WHERE id= ?";
+        final String request = "SELECT * FROM books WHERE id= ?";
 
         Product product = null;
 
@@ -65,18 +64,27 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
 
     @Override
     public void update(Product product) {
-
+        try {
+            Statement statement = connection.createStatement();
+            String updateRequest =
+                    "UPDATE books SET book_name = '" + product.getName()
+                            + "', book_price = " + product.getPrice()
+                            + " WHERE book_id = " + product.getId();
+            statement.executeUpdate(updateRequest);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void save(Product product) {
         try {
             Statement statement = connection.createStatement();
-            String SQL =
+            String saveRequest =
                     "INSERT INTO books VALUES(" + 1 + ",'" + product.getName() +
                             "'," + product.getName() + ",'"
                             + product.getPrice() + "')";
-            statement.executeUpdate(SQL);
+            statement.executeUpdate(saveRequest);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -86,9 +94,9 @@ public class ProductsRepositoryJdbcImpl implements ProductsRepository {
     public void delete(Long id) {
         try {
             Statement statement = connection.createStatement();
-            String SQL =
+            String deleteRequest =
                     "DELETE FROM books WHERE book_id = " + id;
-            statement.executeUpdate(SQL);
+            statement.executeUpdate(deleteRequest);
         } catch (SQLException e) {
             e.printStackTrace();
         }
