@@ -10,17 +10,6 @@
     <name>ex01</name>
     <url>http://maven.apache.org</url>
 
-<!--    <beans xmlns="http://www.springframework.org/schema/beans"-->
-<!--           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"-->
-<!--           xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd-->
-<!--        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">-->
-
-<!--        <jdbc:embedded-database id="dataSource" type="HSQL">-->
-<!--            <jdbc:script location="classpath:schema.sql" />-->
-<!--            <jdbc:script location="classpath:data.sql" />-->
-<!--        </jdbc:embedded-database>-->
-<!--    </beans>-->
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>18</maven.compiler.source>
@@ -61,11 +50,6 @@
             <version>2.4.1</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>commons-io</groupId>-->
-<!--            <artifactId>commons-io</artifactId>-->
-<!--            <version>2.11.0</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>
