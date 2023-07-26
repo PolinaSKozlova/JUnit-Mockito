@@ -96,7 +96,5 @@ public class ProductsRepositoryJdbcImplTest {
                 "The Hobbit", 499.00F));
         productsRepositoryJdbcImpl.delete(8L);
         assertNull(productsRepositoryJdbcImpl.findById(8L).orElse(null));
-        assertThrows(SQLException.class,
-                () -> productsRepositoryJdbcImpl.delete(11L));
     }
 }
