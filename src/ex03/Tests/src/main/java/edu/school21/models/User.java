@@ -35,6 +35,10 @@ public class User {
         authenticationStatus = status;
     }
 
+    public void setAuthenticationStatus(boolean newStatus) {
+        authenticationStatus = newStatus;
+    }
+
     public int getId() {
         return identifier;
     }
