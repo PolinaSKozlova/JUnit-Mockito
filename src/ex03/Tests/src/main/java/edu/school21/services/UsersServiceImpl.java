@@ -14,21 +14,17 @@ public class UsersServiceImpl {
 
     public boolean authenticate(String login, String password)
             throws AlreadyAuthenticatedException, EntityNotFoundException {
-        try {
-            User user = usersRepository.findByLogin(login);
-            if (user.getAuthenticationStatus() == true) {
-                throw new AlreadyAuthenticatedException();
+        User user = usersRepository.findByLogin(login);
+        if (user.getAuthenticationStatus() == true) {
+            throw new AlreadyAuthenticatedException();
+        } else {
+            if (user.getPassword().equals(password)) {
+                user.setAuthenticationStatus(true);
+                usersRepository.update(user);
+                return true;
             } else {
-                if (user.getPassword().equals(password)) {
-                    user.setAuthenticationStatus(true);
-                    usersRepository.update(user);
-                    return true;
-                } else {
-                    return false;
-                }
+                return false;
             }
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException();
         }
     }
 }
