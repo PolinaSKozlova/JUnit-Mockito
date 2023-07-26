@@ -11,12 +11,18 @@ public class UsersServiceImpl {
     public boolean authenticate(String login, String password)
             throws AlreadyAuthenticatedException {
         try {
-            User user = new User();
-            user = usersRepository.findByLogin(login);
-            if (user.getPassword() == password) {
-                return true;
+            User user = usersRepository.findByLogin(login);
+            if (user.getAuthenticationStatus() == true) {
+                throw new AlreadyAuthenticatedException();
             } else {
-                return false;
+                if (user.getPassword().equals(password)) {
+                    User authenticatedUser = new User(user.getId(),
+                            user.getLogin(), user.getPassword(), true);
+                    usersRepository.update(authenticatedUser);
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } catch (EntityNotFoundException e) {
             throw new AlreadyAuthenticatedException();

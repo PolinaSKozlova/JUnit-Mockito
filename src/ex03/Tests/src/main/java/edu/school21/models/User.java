@@ -1,19 +1,38 @@
 package edu.school21.models;
 
+import java.util.Objects;
+
 public class User {
     private int identifier;
     private String login;
     private String password;
     private boolean authenticationStatus;
 
-    public User() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return identifier == user.identifier
+                && authenticationStatus == user.authenticationStatus
+                && Objects.equals(login, user.login)
+                && Objects.equals(password, user.password);
     }
 
-    public User(int id, String userLogin, String userPassword) {
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, login, password, authenticationStatus);
+    }
+
+    public User() {
+        new User();
+    }
+
+    public User(int id, String userLogin, String userPassword, boolean status) {
         identifier = id;
         login = userLogin;
         password = userPassword;
-        authenticationStatus = false;
+        authenticationStatus = status;
     }
 
     public int getId() {
