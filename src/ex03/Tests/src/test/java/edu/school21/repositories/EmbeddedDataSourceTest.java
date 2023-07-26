@@ -24,10 +24,5 @@ public class EmbeddedDataSourceTest {
                 .addScripts("data.sql")
                 .build().getConnection();
     }
-
-    @Test
-    @DisplayName("Test for database connection")
-    public void testGetConnection() throws SQLException {
-
-    }
+    
 }

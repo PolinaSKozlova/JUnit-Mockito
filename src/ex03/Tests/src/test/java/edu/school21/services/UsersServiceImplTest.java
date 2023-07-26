@@ -15,9 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class UsersServiceImplTest {
     private UsersServiceImpl usersService;
     private UsersRepository usersRepository;
-    User userSusan;
-    User userMichaele;
-    User userBob;
+    User userSusan, userMichaele, userBob, userSilvia;
 
     @BeforeEach
     void init() {
@@ -29,6 +27,8 @@ public class UsersServiceImplTest {
                 "9847bnds", false);
         userMichaele = new User(5, "Michaele",
                 "hUfgd12", false);
+        userSilvia = new User(6, "Silvia",
+                "jsfFJshan", true);
     }
 
     @Test
@@ -37,15 +37,20 @@ public class UsersServiceImplTest {
             throws EntityNotFoundException, AlreadyAuthenticatedException {
         Mockito.when(usersRepository.findByLogin("Susan"))
                 .thenReturn(userSusan);
-        assertEquals(true, usersService.authenticate("Susan",
-                "123456"));
         Mockito.when(usersRepository.findByLogin("Bob"))
                 .thenReturn(userBob);
-        assertEquals(true, usersService.authenticate("Bob",
-                "9847bnds"));
+        Mockito.when(usersRepository.findByLogin("Silvia"))
+                .thenReturn(userSilvia);
+        assertEquals(true, usersService
+                .authenticate("Susan", "123456"));
+        assertEquals(true, usersService
+                .authenticate("Bob", "9847bnds"));
         assertThrows(AlreadyAuthenticatedException.class,
-                () -> usersService.authenticate("Bob", "9847bnds"));
-
+                () -> usersService.authenticate("Bob",
+                        "9847bnds"));
+        assertThrows(AlreadyAuthenticatedException.class,
+                () -> usersService.authenticate("Silvia",
+                        "jsfFJshan"));
     }
 
     @Test
@@ -53,8 +58,12 @@ public class UsersServiceImplTest {
     void authenticateIncorrectLogin() throws EntityNotFoundException {
         Mockito.when(usersRepository.findByLogin("Michael"))
                 .thenThrow(EntityNotFoundException.class);
+        Mockito.when(usersRepository.findByLogin("Ken"))
+                .thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> usersService
                 .authenticate("Michael", "hUfgd12"));
+        assertThrows(EntityNotFoundException.class, () -> usersService
+                .authenticate("Ken", "333333"));
     }
 
     @Test
@@ -63,7 +72,11 @@ public class UsersServiceImplTest {
             throws EntityNotFoundException, AlreadyAuthenticatedException {
         Mockito.when(usersRepository.findByLogin("Michaele"))
                 .thenReturn(userMichaele);
+        Mockito.when(usersRepository.findByLogin("Bob"))
+                .thenReturn(userMichaele);
         assertEquals(false, usersService
                 .authenticate("Michaele", "hUfgd"));
+        assertEquals(false, usersService
+                .authenticate("Bob", "hUfgd"));
     }
 }
